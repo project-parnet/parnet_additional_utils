@@ -1,0 +1,168 @@
+[build-system]
+
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name="parnet_additional_utils"
+description="Additional utils for PARNET."
+requires-python = ">=3.10,<3.11"
+
+version = "0.0.1"
+#dynamic = ["version"]
+
+authors = [
+  { name = "Lambert Moyon" }
+]
+license = {text = "Apache-2.0"}
+readme = {file = "README.md", content-type = "text/markdown"}
+
+
+dependencies = [
+    "biopython >=1.83,<1.85",
+    "datasets >=3.6.0,<4.0.0",
+    "gin_config>=0.5.0",
+    "lightning >=2.3,<2.6",
+    "lightning-utilities >=0.14,<0.15",
+    "pyarrow >=14.0,<21.0",
+    "pybigwig >=0.3.22,<0.4",
+    "pysam >=0.23.3,<0.24",
+    "pandas >=2.0,<2.4",
+    "numpy >=1.26,<2.0",
+    "sequence-models >=1.8,<2.0",
+    "tensorflow >=2.16,<2.17",
+    "tensorflow-datasets==4.9.3",
+    "pydantic >=2.11,<3.0",
+    "pandera >=0.24,<1.0",
+    "torch >=2.5,<2.6",
+    "more-itertools >=10.7,<11.0",
+    "scikit-learn >=1.7.0,<1.8.0",
+    "torchmetrics >=1.8.2,<2",
+    "tqdm >=4.67.1,<5",
+    "captum >=0.7.0,<0.8",
+    "jaxtyping >=0.3.2,<0.4",
+    "parnet @ git+https://github.com/lambosaur/parnet.git@2e14278",
+]
+
+[project.optional-dependencies]
+
+gpu = [
+    "tensorflow[and-cuda] >=2.16,<2.17",
+    "torch >=2.5,<2.6",
+]
+
+dev = [
+    "pre-commit >=4.0,<5.0",
+    # Lint
+    "mypy >=1.11,<2.0",
+    "ruff >=0.11,<1.0",
+    # Tests
+    "pytest >=8.4,<9",
+    "pytest-cov >=6.0,<7.0",
+    # Docs
+    "mkdocstrings-python >=1.16,<2.0",
+    "mkdocs >=1.6,<2.0",
+    "mkdocs-material >=9.6,<10.0",
+]
+
+[tool.setuptools.packages.find]
+
+where = ["src"]
+
+#[tool.setuptools_scm]
+#write_to = "src/parnet_analyses_libs/_version.py"
+
+
+[tool.pytest.ini_options]
+
+addopts = "-ra --cov"
+# See https://stackoverflow.com/questions/10253826/path-issue-with-pytest-importerror-no-module-named-yadayadayada
+pythonpath = ['.']
+testpaths = ["tests"]
+
+[tool.coverage.report]
+
+show_missing = true
+
+[tool.ruff]
+
+target-version = "py310"
+line-length = 102
+indent-width = 4
+
+[tool.ruff.format]
+
+quote-style = "double"  # Like Black, use double quotes for strings.
+indent-style = "space"  # Like Black, indent with spaces, rather than tabs.
+line-ending = "auto"
+docstring-code-format = false  # Automatically format Python code examples in docstrings.
+docstring-code-line-length = "dynamic"  # or INT
+
+[tool.ruff.lint]
+
+extend-select = [
+  'D',  #pydocstyle - docstrings
+  'E',  # pycodestyle - generic errors
+  'W',  # pycodestyle - warnings
+  "E2",  # pycodestyle - whitespace rules
+  "E4",  # pycodestyle - import rules
+  "E7",  # pycodestyle - statement rules
+  "E9",  # pycodestyle - runtime rules
+  'F',   # Pyflakes: source file errors, unsued variables.
+  'I',  # sort imports
+  'UP',  # pyupgrade - upgrade syntax
+  "ANN",  # flake8 - annotations
+  "RUF",  # ruff dev's own rules
+  "SIM",  # pyflakes simplicity - encourages simpler code.
+  "C90",  # more complexity rules
+]
+
+ignore = [
+  "E201",  # whitespace after '('
+  "E202",  # whitespace before ')'
+  "E211",  # whitespace before '('
+  "E203",  # Whitespace before ':'
+  "F722",  # Forward annotation (deactivated for jaxtyping)
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = [
+  "F401",  # Disable fix for unused imports (`F401`).
+  "E501",  # line too long
+  #"W504",  # prevent line break after binary operator ; NOTE: pycodestyle rule, not handled by ruff.
+]
+
+
+[tool.ruff.lint.pydocstyle]
+
+convention = "google"
+
+[tool.ruff.lint.isort]
+
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.mypy]
+
+python_version = "3.10"
+warn_return_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+# Allow gradual typing; don’t fail on third-party packages without stubs
+ignore_missing_imports = true
+
+# Enforce typing on your own functions
+check_untyped_defs = true
+
+# Optional / stricter checks
+no_implicit_optional = true
+strict_equality = true
+
+# Test folder relaxed
+[[tool.mypy.overrides]]
+
+module = ["tests.*"]
+disallow_untyped_defs = false
