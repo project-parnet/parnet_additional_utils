@@ -251,10 +251,10 @@ def load_parnet_model(
             )
         cfg = PARNET_MODEL_CONFIGS[name_str]
 
-    model: RBPNet = torch.load(filepath, map_location=device).to(dtype)
+    model: RBPNet = torch.load(filepath, map_location=device, weights_only=False).to(dtype)
 
     if cfg.bypass_projection:
-        model.projection = lambda x: x
+        model.projection = torch.nn.Identity()
 
     model.head.use_maximum_target_control_logprob = cfg.use_maximum_target_control_logprob
 
