@@ -21,7 +21,7 @@ readme = {file = "README.md", content-type = "text/markdown"}
 
 dependencies = [
     "biopython >=1.83,<1.85",
-    "datasets >=3.6.0,<4.0.0",
+    "datasets >=3.6.0",
     "gin_config>=0.5.0",
     "lightning >=2.3,<2.6",
     "lightning-utilities >=0.14,<0.15",
@@ -35,21 +35,21 @@ dependencies = [
     "tensorflow-datasets==4.9.3",
     "pydantic >=2.11,<3.0",
     "pandera >=0.24,<1.0",
-    "torch >=2.5,<2.6",
+    "torch >=2.5",
     "more-itertools >=10.7,<11.0",
     "scikit-learn >=1.7.0,<1.8.0",
     "torchmetrics >=1.8.2,<2",
     "tqdm >=4.67.1,<5",
     "captum >=0.7.0,<0.8",
     "jaxtyping >=0.3.2,<0.4",
-    "parnet @ git+https://github.com/lambosaur/parnet.git@2e14278",
+    "parnet",  # Since under dev: this should be installed from git repo or from local path, not from PyPI => no version constraint.
 ]
 
 [project.optional-dependencies]
 
 gpu = [
     "tensorflow[and-cuda] >=2.16,<2.17",
-    "torch >=2.5,<2.6",
+    "torch >=2.5",
 ]
 
 dev = [
